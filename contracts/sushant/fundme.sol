@@ -15,7 +15,7 @@ contract fund_me {
         require(msg.value > 1, "Not enough ETH. send at least 1 ETH");
 
         addressToAmountFunded[msg.sender] += msg.value;
-        funders.push(msg.sender);
+        senders.push(msg.sender);
     }
 
     function withdraw() public owner {
