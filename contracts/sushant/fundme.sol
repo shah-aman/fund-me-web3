@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
@@ -8,22 +7,25 @@ contract fund_me {
     address public owner;
 
     constructor(address _owner) {
-        owner = i_owner;
+        owner = _owner;
     }
 
     function fund() public payable {
-        require(msg.value > 1, "Not enough ETH. send at least 1 ETH");
+        require(msg.value > 1, "Not enough ETH. Send at least 1 ETH");
 
         addressToAmountFunded[msg.sender] += msg.value;
         senders.push(msg.sender);
     }
 
-    function withdraw() public owner {
+    function withdraw() public onlyOwner {
         uint256 balance = address(this).balance;
-        require(balance > 0, "Not enough Funds");
+        require(balance > 0, "Not enough funds");
+
+        payable(owner).transfer(balance);
     }
 
-    modifier owner() {
+    modifier onlyOwner() {
         require(msg.sender == owner, "Unauthorized Access");
+        _;
     }
 }
